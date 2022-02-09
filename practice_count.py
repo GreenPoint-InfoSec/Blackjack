@@ -6,7 +6,6 @@ HEARTS = chr(9829) # '♥'
 DIAMONDS = chr(9830) # '♦'
 SPADES = chr(9824) # '♠'
 CLUBS = chr(9827) # '♣'
-BACKSIDE = 'backside'
 
 try: 
     DECKS = int(argv[1])
@@ -15,7 +14,6 @@ except:
 
 suits = (HEARTS, DIAMONDS, SPADES, CLUBS)
 ranks = ('2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A')
-values = {'2' : 2, '3' : 3, '4' : 4, '5' : 5, '6' : 6, '7' : 7, '8' : 8, '9' : 9, '10' : 10, 'J' : 10, 'Q' : 10, 'K' : 10, 'A' : 11}
 
 
 class Card:
@@ -47,9 +45,10 @@ class Deck:
         shuffle(self.deck)
 
     def deal(self):
-        dealt_card = self.deck.pop()
-        return dealt_card
-     
+        if len(self.deck) > 0: 
+            dealt_card = self.deck.pop()
+            return dealt_card
+
 
 class Game:
     def __init__(self):
@@ -58,7 +57,7 @@ class Game:
         self.running_count = 0
 
     def play_round(self):
-        for i in range(randint(1,20)):
+        for i in range(randint(1,len(self.deck.deck))):
             turned_card = self.deck.deal()
             print(turned_card)
             if turned_card.rank in ['2', '3', '4', '5', '6']:
@@ -71,7 +70,7 @@ class Game:
 
     def check_count(self):
         try:
-            self.player_count = int(input("What is the running count?\n"))
+            self.player_count = int(input("\nWhat is the running count?\n"))
         except:
             print("You must enter a count!\n")
             self.player_count = int(input("What is the running count?\n"))
@@ -82,9 +81,22 @@ class Game:
         else:
             print("Not quite!\nThe running count was {}\n".format(self.running_count))
 
+    def game(self):
+        while len(self.deck.deck) > 0:
+            self.play_round()
+            self.check_count()
+        self.game_over()
+
+    def game_over(self):
+        rematch = input("Would you like to play again? [Y/N]\n")
+        if rematch == 'Y' or rematch == 'y' or rematch == 'Yes' or rematch == 'yes':
+            print("")
+            game = Game()
+            game.game()
+        else:
+            quit()
+
+
 if __name__ == "__main__":
     game = Game()
-    
-    while len(game.deck.deck) > 0:
-        game.play_round()
-        game.check_count()
+    game.game()
