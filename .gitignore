@@ -1,0 +1,6 @@
+.venv
+.vscode
+
+deviations.py
+main.py
+strategy.py
