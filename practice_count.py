@@ -17,6 +17,7 @@ suits = (HEARTS, DIAMONDS, SPADES, CLUBS)
 ranks = ('2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A')
 values = {'2' : 2, '3' : 3, '4' : 4, '5' : 5, '6' : 6, '7' : 7, '8' : 8, '9' : 9, '10' : 10, 'J' : 10, 'Q' : 10, 'K' : 10, 'A' : 11}
 
+
 class Card:
     def __init__(self, suit, rank):
         self.suit = suit
@@ -49,10 +50,6 @@ class Deck:
         dealt_card = self.deck.pop()
         return dealt_card
      
-        
-# class Hand:
-#     def __init__(self) -> None:
-#         pass
 
 class Game:
     def __init__(self):
@@ -73,11 +70,17 @@ class Game:
         return self.running_count
 
     def check_count(self):
-        self.player_count = int(input("What is the running count?\n"))
+        try:
+            self.player_count = int(input("What is the running count?\n"))
+        except:
+            print("You must enter a count!\n")
+            self.player_count = int(input("What is the running count?\n"))
+        
+
         if self.player_count == self.running_count:
-            print("Good Job!")
+            print("Good Job!\n")
         else:
-            print("Not quite!\nThe running count was {}".format(self.running_count))
+            print("Not quite!\nThe running count was {}\n".format(self.running_count))
 
 if __name__ == "__main__":
     game = Game()
