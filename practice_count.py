@@ -1,7 +1,6 @@
 from random import shuffle, randint
-from sys import argv
+from sys import argv, stdout
 from time import sleep
-from sys import stdout
 
 # Set up the suits (A list of chr codes is at https://inventwithpython.com/charactermap):
 HEARTS = chr(9829) # '♥'
