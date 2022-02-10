@@ -1,3 +1,4 @@
+from email.header import Header
 from random import shuffle, randint
 from sys import argv
 
@@ -13,7 +14,7 @@ except:
     DECKS = 1
 
 suits = (HEARTS, DIAMONDS, SPADES, CLUBS)
-ranks = ('2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A')
+ranks = ('2 ', '3 ', '4 ', '5 ', '6 ', '7 ', '8 ', '9 ', '10', 'J ', 'Q ', 'K ', 'A ')
 
 
 class Card:
@@ -59,7 +60,10 @@ class Game:
     def play_round(self):
         for i in range(randint(1,len(self.deck.deck))):
             turned_card = self.deck.deal()
-            print(turned_card)
+            if turned_card.suit == CLUBS or turned_card.suit == SPADES:
+                print(f"\033[48;5;255m\033[38;5;0m {turned_card} \033[0;0m")
+            if turned_card.suit == HEARTS or turned_card.suit == DIAMONDS:
+                  print(f"\033[48;5;255m\033[38;5;160m {turned_card} \033[0;0m")  
             if turned_card.rank in ['2', '3', '4', '5', '6']:
                 self.running_count += 1
             elif turned_card.rank in ['A', 'J', 'Q', 'K', '10']:
