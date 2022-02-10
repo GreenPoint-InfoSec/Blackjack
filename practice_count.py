@@ -33,7 +33,7 @@ class Card:
         
     def __str__(self):
         return self.rank + self.suit
-        
+
 
 class Deck:
     def __init__(self):
