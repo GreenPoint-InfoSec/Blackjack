@@ -64,9 +64,9 @@ class Game:
                 print(f"\033[48;5;255m\033[38;5;0m {turned_card} \033[0;0m")
             if turned_card.suit == HEARTS or turned_card.suit == DIAMONDS:
                   print(f"\033[48;5;255m\033[38;5;160m {turned_card} \033[0;0m")  
-            if turned_card.rank in ['2', '3', '4', '5', '6']:
+            if turned_card.rank in ['2 ', '3 ', '4 ', '5 ', '6 ']:
                 self.running_count += 1
-            elif turned_card.rank in ['A', 'J', 'Q', 'K', '10']:
+            elif turned_card.rank in ['A ', 'J ', 'Q ', 'K ', '10']:
                 self.running_count -= 1
             else:
                 self.running_count += 0
