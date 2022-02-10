@@ -11,12 +11,12 @@ CLUBS = chr(9827) # '♣'
 try: 
     DECKS = int(argv[1])
 except:
-    DECKS = 1
+    DECKS = 6
 
 try:
     TIME = int(argv[2])
 except:
-    TIME = 2
+    TIME = 1
 
 suits = (HEARTS, DIAMONDS, SPADES, CLUBS)
 ranks = ('2 ', '3 ', '4 ', '5 ', '6 ', '7 ', '8 ', '9 ', '10', 'J ', 'Q ', 'K ', 'A ')
