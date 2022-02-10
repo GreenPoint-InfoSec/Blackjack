@@ -1,12 +1,16 @@
 from random import shuffle, randint
 from sys import argv
 from time import sleep
+from sys import stdout
 
 # Set up the suits (A list of chr codes is at https://inventwithpython.com/charactermap):
 HEARTS = chr(9829) # '♥'
 DIAMONDS = chr(9830) # '♦'
 SPADES = chr(9824) # '♠'
 CLUBS = chr(9827) # '♣'
+
+CURSOR_UP_ONE = '\033[1A' 
+ERASE_LINE = '\033[2K'
 
 try: 
     DECKS = int(argv[1])
@@ -76,6 +80,8 @@ class Game:
             else:
                 self.running_count += 0
             sleep(TIME)
+            stdout.write(CURSOR_UP_ONE) 
+            stdout.write(ERASE_LINE) 
         return self.running_count
         
     def check_count(self):
