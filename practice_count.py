@@ -57,12 +57,12 @@ class Game:
         self.running_count = 0
 
     def play_round(self):
-        for i in range(randint(1,len(self.deck.deck))):
+        for i in range(randint(1,min(26,len(self.deck.deck)))):
             turned_card = self.deck.deal()
             if turned_card.suit == CLUBS or turned_card.suit == SPADES:
                 print(f"\033[48;5;255m\033[38;5;0m {turned_card} \033[0;0m")
             if turned_card.suit == HEARTS or turned_card.suit == DIAMONDS:
-                  print(f"\033[48;5;255m\033[38;5;160m {turned_card} \033[0;0m")  
+                print(f"\033[48;5;255m\033[38;5;160m {turned_card} \033[0;0m")  
             if turned_card.rank in ['2 ', '3 ', '4 ', '5 ', '6 ']:
                 self.running_count += 1
             elif turned_card.rank in ['A ', 'J ', 'Q ', 'K ', '10']:
@@ -70,13 +70,13 @@ class Game:
             else:
                 self.running_count += 0
         return self.running_count
-
+        
     def check_count(self):
         try:
             self.player_count = int(input("\nWhat is the running count?\n"))
         except:
-            print("You must enter a count!\n")
-            self.player_count = int(input("What is the running count?\n"))
+            print("You must enter a count!")
+            self.check_count()
         
 
         if self.player_count == self.running_count:
