@@ -1,4 +1,3 @@
-from email.header import Header
 from random import shuffle, randint
 from sys import argv
 
