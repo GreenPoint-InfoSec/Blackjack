@@ -1,5 +1,6 @@
 from random import shuffle, randint
 from sys import argv
+from time import sleep
 
 # Set up the suits (A list of chr codes is at https://inventwithpython.com/charactermap):
 HEARTS = chr(9829) # '♥'
@@ -11,6 +12,11 @@ try:
     DECKS = int(argv[1])
 except:
     DECKS = 1
+
+try:
+    TIME = int(argv[2])
+except:
+    TIME = 2
 
 suits = (HEARTS, DIAMONDS, SPADES, CLUBS)
 ranks = ('2 ', '3 ', '4 ', '5 ', '6 ', '7 ', '8 ', '9 ', '10', 'J ', 'Q ', 'K ', 'A ')
@@ -69,6 +75,7 @@ class Game:
                 self.running_count -= 1
             else:
                 self.running_count += 0
+            sleep(TIME)
         return self.running_count
         
     def check_count(self):
