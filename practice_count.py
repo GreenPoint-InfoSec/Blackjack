@@ -61,48 +61,69 @@ class Game:
     def play_round(self):
         self.hint_cards = []
         for i in range(randint(1,min(26,len(self.deck.deck)))):
-            turned_card = self.deck.deal()
-            if turned_card.suit == CLUBS or turned_card.suit == SPADES:
-                print(f"\033[48;5;255m\033[38;5;0m {turned_card} \033[0;0m")
-            elif turned_card.suit == HEARTS or turned_card.suit == DIAMONDS:
-                print(f"\033[48;5;255m\033[38;5;160m {turned_card} \033[0;0m")  
+            self.turned_card = self.deck.deal()
+            if self.turned_card.suit == CLUBS or self.turned_card.suit == SPADES:
+                print(f"\033[48;5;255m\033[38;5;0m {self.turned_card} \033[0;0m")
+            elif self.turned_card.suit == HEARTS or self.turned_card.suit == DIAMONDS:
+                print(f"\033[48;5;255m\033[38;5;160m {self.turned_card} \033[0;0m")  
             
-            if turned_card.rank in ['2 ', '3 ', '4 ', '5 ', '6 ']:
-                self.running_count += 1
-            elif turned_card.rank in ['A ', 'J ', 'Q ', 'K ', '10']:
-                self.running_count -= 1
-            else:
-                self.running_count += 0
-            
-            self.burned_cards.append(turned_card)
-            self.hint_cards.append(turned_card)
+            self.count_running()            
+            self.burned_cards.append(self.turned_card)
+            self.hint_cards.append(self.turned_card)
             sleep(TIME)
             stdout.write(CURSOR_UP_ONE) 
             stdout.write(ERASE_LINE)
             sleep(0.5)
 
         return self.running_count, self.burned_cards, self.hint_cards
+
+    def count_running(self):
+        if self.turned_card.rank in ['2 ', '3 ', '4 ', '5 ', '6 ']:
+            self.running_count += 1
+        elif self.turned_card.rank in ['A ', 'J ', 'Q ', 'K ', '10']:
+            self.running_count -= 1
+        else:
+            self.running_count += 0
+
+    def count_true(self):
+        self.decks_remaining = round(((len(self.deck.deck)/52)*2))/2
+        self.true_count = round((self.running_count / self.decks_remaining)*2)/2
+        return self.true_count
         
-    def check_count(self):
+    def check_running_count(self):
         try:
             self.player_count = input("\nWhat is the running count?\nEnter 'h' for a hint...\n")
         except:
             print("\nYou must enter a count!")
-            self.check_count()
+            self.check_running_count()
         
         if self.player_count == str(self.running_count):
             print("Good Job!\n")
         elif self.player_count == 'h':
             print("")
             self.hint()
-            self.check_count()
+            self.check_running_count()
         else:
             print("Not quite!\nThe running count was {}\n".format(self.running_count))
+ 
+    def check_true_count(self):
+        self.count_true()
+        try:
+            self.player_true_count = float(input("\nWhat is the true count?\n"))
+        except:
+            print("You must enter a count!")
+            self.check_true_count()
+
+        if self.player_true_count == self.true_count:
+            print("Good Job!\n")
+        else:
+            print("Not quite!\nThe running count was {}\n".format(self.true_count))
 
     def game(self):
         while len(self.deck.deck) > 0:
             self.play_round()
-            self.check_count()
+            self.check_running_count()
+            self.check_true_count()
         self.game_over()
 
     def game_over(self):
