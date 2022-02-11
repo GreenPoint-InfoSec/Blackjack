@@ -41,14 +41,6 @@ class Deck:
             for suit in suits:
                 for rank in ranks:
                     self.deck.append(Card(suit, rank))
-                
-    def __str__(self):
-        deck_contents = ''
-        x = 0
-        for card in self.deck:
-            x += 1
-            deck_contents += '\n' + card.__str__()
-        return "The deck has: " + deck_contents
 
     def shuffle(self):
         shuffle(self.deck)
@@ -64,24 +56,30 @@ class Game:
         self.deck = Deck() 
         self.deck.shuffle() 
         self.running_count = 0
+        self.burned_cards = []
 
     def play_round(self):
         for i in range(randint(1,min(26,len(self.deck.deck)))):
             turned_card = self.deck.deal()
             if turned_card.suit == CLUBS or turned_card.suit == SPADES:
                 print(f"\033[48;5;255m\033[38;5;0m {turned_card} \033[0;0m")
-            if turned_card.suit == HEARTS or turned_card.suit == DIAMONDS:
+            elif turned_card.suit == HEARTS or turned_card.suit == DIAMONDS:
                 print(f"\033[48;5;255m\033[38;5;160m {turned_card} \033[0;0m")  
+            
             if turned_card.rank in ['2 ', '3 ', '4 ', '5 ', '6 ']:
                 self.running_count += 1
             elif turned_card.rank in ['A ', 'J ', 'Q ', 'K ', '10']:
                 self.running_count -= 1
             else:
                 self.running_count += 0
+            
+            self.burned_cards.append(turned_card)
             sleep(TIME)
             stdout.write(CURSOR_UP_ONE) 
-            stdout.write(ERASE_LINE) 
-        return self.running_count
+            stdout.write(ERASE_LINE)
+            sleep(0.5)
+
+        return self.running_count, self.burned_cards
         
     def check_count(self):
         try:
@@ -103,6 +101,7 @@ class Game:
         self.game_over()
 
     def game_over(self):
+        self.print_burned()
         rematch = input("Would you like to play again? [Y/N]\n")
         if rematch == 'Y' or rematch == 'y' or rematch == 'Yes' or rematch == 'yes':
             print("")
@@ -110,6 +109,13 @@ class Game:
             game.game()
         else:
             quit()
+
+    def print_burned(self):
+        for card in self.burned_cards:
+            if card.suit == CLUBS or card.suit == SPADES:
+                print(f"\033[48;5;255m\033[38;5;0m {card} \033[0;0m")
+            elif card.suit == HEARTS or card.suit == DIAMONDS:
+                print(f"\033[48;5;255m\033[38;5;160m {card} \033[0;0m")
 
 
 if __name__ == "__main__":
