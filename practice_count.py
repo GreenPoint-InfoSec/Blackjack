@@ -59,6 +59,7 @@ class Game:
         self.burned_cards = []
 
     def play_round(self):
+        self.hint_cards = []
         for i in range(randint(1,min(26,len(self.deck.deck)))):
             turned_card = self.deck.deal()
             if turned_card.suit == CLUBS or turned_card.suit == SPADES:
@@ -74,23 +75,27 @@ class Game:
                 self.running_count += 0
             
             self.burned_cards.append(turned_card)
+            self.hint_cards.append(turned_card)
             sleep(TIME)
             stdout.write(CURSOR_UP_ONE) 
             stdout.write(ERASE_LINE)
             sleep(0.5)
 
-        return self.running_count, self.burned_cards
+        return self.running_count, self.burned_cards, self.hint_cards
         
     def check_count(self):
         try:
-            self.player_count = int(input("\nWhat is the running count?\n"))
+            self.player_count = input("\nWhat is the running count?\nEnter 'h' for a hint...\n")
         except:
-            print("You must enter a count!")
+            print("\nYou must enter a count!")
             self.check_count()
         
-
-        if self.player_count == self.running_count:
+        if self.player_count == str(self.running_count):
             print("Good Job!\n")
+        elif self.player_count == 'h':
+            print("")
+            self.hint()
+            self.check_count()
         else:
             print("Not quite!\nThe running count was {}\n".format(self.running_count))
 
@@ -101,7 +106,6 @@ class Game:
         self.game_over()
 
     def game_over(self):
-        self.print_burned()
         rematch = input("Would you like to play again? [Y/N]\n")
         if rematch == 'Y' or rematch == 'y' or rematch == 'Yes' or rematch == 'yes':
             print("")
@@ -111,7 +115,14 @@ class Game:
             quit()
 
     def print_burned(self):
-        for card in self.burned_cards:
+        for card in self.hint_cards:
+            if card.suit == CLUBS or card.suit == SPADES:
+                print(f"\033[48;5;255m\033[38;5;0m {card} \033[0;0m")
+            elif card.suit == HEARTS or card.suit == DIAMONDS:
+                print(f"\033[48;5;255m\033[38;5;160m {card} \033[0;0m")
+
+    def hint(self):
+        for card in self.hint_cards:
             if card.suit == CLUBS or card.suit == SPADES:
                 print(f"\033[48;5;255m\033[38;5;0m {card} \033[0;0m")
             elif card.suit == HEARTS or card.suit == DIAMONDS:
