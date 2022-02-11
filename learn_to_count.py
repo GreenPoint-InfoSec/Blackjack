@@ -118,7 +118,6 @@ class Game:
         else:
             print("Not quite!\nThe running count was {}\n".format(self.true_count))
 
-
     def game(self):
         while len(self.deck.deck) > 0:
             self.play_round()
