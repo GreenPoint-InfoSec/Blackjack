@@ -87,7 +87,10 @@ class Game:
 
     def count_true(self):
         self.decks_remaining = round(((len(self.deck.deck)/52)*2))/2
-        self.true_count = round((self.running_count / self.decks_remaining)*2)/2
+        if self.decks_remaining > 0:
+            self.true_count = round((self.running_count / self.decks_remaining)*2)/2
+        else:
+            self.true_count = 0
         return self.true_count
         
     def check_running_count(self):
@@ -99,12 +102,12 @@ class Game:
         
         if self.player_count == str(self.running_count):
             print("Good Job!\n")
-        elif self.player_count == 'h':
+        elif self.player_count[0].lower() == 'h':
             print("")
             self.hint()
             self.check_running_count()
         else:
-            print("Not quite!\nThe running count was {}\n".format(self.running_count))
+            print("Not quite!\nThe running count is {}\n".format(self.running_count))
  
     def check_true_count(self):
         self.count_true()
@@ -117,7 +120,7 @@ class Game:
         if self.player_true_count == self.true_count:
             print("Good Job!\n")
         else:
-            print("Not quite!\nThe running count was {}\n".format(self.true_count))
+            print("Not quite!\nThe true count is {}\n".format(self.true_count))
 
     def game(self):
         while len(self.deck.deck) > 0:
@@ -128,7 +131,7 @@ class Game:
 
     def game_over(self):
         rematch = input("Would you like to play again? [Y/N]\n")
-        if rematch == 'Y' or rematch == 'y' or rematch == 'Yes' or rematch == 'yes':
+        if rematch[0].upper() == 'Y':
             print("")
             game = Game()
             game.game()

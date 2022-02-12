@@ -77,20 +77,23 @@ class Game:
         if self.turned_card.rank in ['2 ', '3 ', '4 ', '5 ', '6 ']:
             self.running_count += 1
             sleep(TIME)
-            print("Running count +1")
+            print("+1")
         elif self.turned_card.rank in ['A ', 'J ', 'Q ', 'K ', '10']:
             self.running_count -= 1
             sleep(TIME)
-            print("Running count -1")
+            print("-1")
         else:
             self.running_count += 0
             sleep(TIME)
-            print("Running count +0")
+            print("-")
         return self.running_count
 
     def count_true(self):
         self.decks_remaining = round(((len(self.deck.deck)/52)*2))/2
-        self.true_count = self.running_count / self.decks_remaining
+        if self.decks_remaining > 0:
+            self.true_count = round((self.running_count / self.decks_remaining)*2)/2
+        else:
+            self.true_count = 0
         return self.true_count
 
     def check_count(self):
@@ -103,12 +106,12 @@ class Game:
         if self.player_count == self.running_count:
             print("Good Job!\n")
         else:
-            print("Not quite!\nThe running count was {}\n".format(self.running_count))
+            print("Not quite!\nThe running count is {}\n".format(self.running_count))
 
     def check_true_count(self):
         self.count_true()
         try:
-            self.player_true_count = int(input("\nWhat is the true count?\n"))
+            self.player_true_count = float(input("\nWhat is the true count?\n"))
         except:
             print("You must enter a count!")
             self.check_true_count()
@@ -116,7 +119,7 @@ class Game:
         if self.player_true_count == self.true_count:
             print("Good Job!\n")
         else:
-            print("Not quite!\nThe running count was {}\n".format(self.true_count))
+            print("Not quite!\nThe true count is {}\n".format(self.true_count))
 
     def game(self):
         while len(self.deck.deck) > 0:
@@ -127,7 +130,7 @@ class Game:
 
     def game_over(self):
         rematch = input("Would you like to play again? [Y/N]\n")
-        if rematch == 'Y' or rematch == 'y' or rematch == 'Yes' or rematch == 'yes':
+        if rematch[0].upper() == 'Y':
             print("")
             game = Game()
             game.game()

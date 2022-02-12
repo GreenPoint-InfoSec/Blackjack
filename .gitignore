@@ -1,6 +1,6 @@
 .venv
 .vscode
 
-main.py
+agent.py
+model.py
 strategy.py
-v1.py
